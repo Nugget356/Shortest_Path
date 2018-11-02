@@ -1,0 +1,123 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 680
+  ClientWidth = 1000
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lblGridSize: TLabel
+    Left = 829
+    Top = 8
+    Width = 163
+    Height = 13
+    Caption = 'What size would you like the Grid?'
+  end
+  object lblx: TLabel
+    Left = 931
+    Top = 30
+    Width = 6
+    Height = 13
+    Caption = 'x'
+  end
+  object edtwidth: TEdit
+    Left = 876
+    Top = 27
+    Width = 49
+    Height = 21
+    TabOrder = 0
+    TextHint = '0'
+  end
+  object edtheight: TEdit
+    Left = 943
+    Top = 27
+    Width = 49
+    Height = 21
+    TabOrder = 1
+    TextHint = '0'
+  end
+  object btnGrid: TButton
+    Left = 896
+    Top = 54
+    Width = 75
+    Height = 25
+    Caption = 'Create'
+    TabOrder = 2
+    OnClick = btnGridClick
+  end
+  object rgrpObject: TRadioGroup
+    Left = 807
+    Top = 97
+    Width = 185
+    Height = 105
+    Caption = 'Object Selecter'
+    ItemIndex = 0
+    Items.Strings = (
+      'Open'
+      'Target'
+      'Seeker'
+      'Closed')
+    TabOrder = 3
+  end
+  object rgrpSearchType: TRadioGroup
+    Left = 807
+    Top = 208
+    Width = 185
+    Height = 105
+    Caption = 'Select Search Method'
+    Items.Strings = (
+      'A* Search'
+      'Breadth First Search'
+      'Depth First Search')
+    TabOrder = 4
+  end
+  object btnSearch: TButton
+    Left = 896
+    Top = 336
+    Width = 75
+    Height = 25
+    Caption = 'Search'
+    TabOrder = 5
+    OnClick = btnSearchClick
+  end
+  object btnReset: TButton
+    Left = 896
+    Top = 376
+    Width = 75
+    Height = 25
+    Caption = 'Reset'
+    TabOrder = 6
+    OnClick = btnResetClick
+  end
+  object memMoves: TMemo
+    Left = 807
+    Top = 407
+    Width = 185
+    Height = 199
+    TabOrder = 7
+  end
+  object pnlGrid: TPanel
+    Left = 0
+    Top = 2
+    Width = 670
+    Height = 670
+    TabOrder = 8
+  end
+  object btnSaveLocations: TButton
+    Left = 808
+    Top = 640
+    Width = 75
+    Height = 25
+    Caption = 'Save Locations'
+    TabOrder = 9
+    OnClick = btnSaveLocationsClick
+  end
+end

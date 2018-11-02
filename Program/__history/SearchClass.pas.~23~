@@ -1,0 +1,228 @@
+unit SearchClass;
+
+interface
+
+uses GridItemClass, Generics.Collections, System.SysUtils;
+
+type TSearch = Class
+  private
+  public
+    procedure runBreadthFirstSearch(rootNode : TGridItem);
+    procedure runDepthFirstSearch(rootNode : TGridItem);
+    procedure runAStarSearch(rootNode, targetNode : TGridItem);
+End;
+
+implementation
+
+  procedure TSearch.runBreadthFirstSearch(rootNode: TGridItem);
+  //Start of the Breadth First Search Algorithm
+  var
+    queue: TQueue<TGridItem>;
+    itemFound : boolean;
+    currentNode : TGridItem;
+  begin
+    //Creating the queue
+    queue := TQueue<TGridItem>.Create;
+    //Putting the seeker in the queue first a this is the starting node
+    queue.Enqueue(rootNode);
+    //Setting the target as not found
+    itemFound := false;
+    //While the queue count is not empty and the target has still not been found DO
+    while (queue.Count > 0) and (itemFound = false) do
+    begin
+
+      //Setting the current node to the item in the queue whilst taking it out of the queue
+      currentNode := queue.Dequeue;
+      //Checking if the current node is the target
+      if currentNode.getCurrentState = 'Target' then
+        //If it is the target then set that the target as found.
+        itemFound := true
+      else
+      begin
+        //Checking if there is a connection to the left of the current node
+        //and not classed as closed
+        if (currentNode.getLeftConnection <> nil) And (currentNode.getCurrentState <> 'Closed') then
+        Begin
+          //If there is then put that node in the queue
+          queue.Enqueue(currentNode.getLeftConnection);
+          //Removes the connection so that it doesn't go back and creating and infinite loop
+          currentNode.setLeftConnection(Nil);
+          //if it is not the seeker then it will be changed to a visited node
+          //and the image on the grid
+          if currentNode.getCurrentState <> 'Seeker' then
+          Begin
+          currentNode.setCurrentState('Visited');
+          currentNode.Picture.LoadFromFile('Visited.jpg');
+          End;
+        End;
+        //Checking if there is a connection to the right of the current node.
+        if (currentNode.getRightConnection <> nil) And (currentNode.getCurrentState <> 'Closed') then
+        Begin
+          //If there is then put that node in the queue
+          queue.Enqueue(currentNode.getRightConnection);
+          //Removes the connection so that it doesn't go back and creating and infinite loop
+          currentNode.setRightConnection(Nil);
+          //if it is not the seeker then it will be changed to a visited node
+          //and the image on the grid
+          if currentNode.getCurrentState <> 'Seeker' then
+          Begin
+          currentNode.setCurrentState('Visited');
+          currentNode.Picture.LoadFromFile('Visited.jpg');
+          End;
+        End;
+        //Checking if there is a connection to the top of the current node.
+        if (currentNode.getTopConnection <> nil) And (currentNode.getCurrentState <> 'Closed') then
+        Begin
+          //If there is then put that node in the queue
+          queue.Enqueue(currentNode.getTopConnection);
+          //Removes the connection so that it doesn't go back and creating and infinite loop
+          currentNode.setTopConnection(Nil);
+          //if it is not the seeker then it will be changed to a visited node
+          //and the image on the grid
+          if currentNode.getCurrentState <> 'Seeker' then
+          Begin
+          currentNode.setCurrentState('Visited');
+          currentNode.Picture.LoadFromFile('Visited.jpg');
+          End;
+        End;
+        //Checking if there is a connection to the bottom of the current node.
+        if (currentNode.getBottomConnection <> nil) And (currentNode.getCurrentState <> 'Closed') then
+        Begin
+          //If there is then put that node in the queue
+          queue.Enqueue(currentNode.getBottomConnection);
+          //Removes the connection so that it doesn't go back and creating and infinite loop
+          currentNode.setBottomConnection(Nil);
+          //if it is not the seeker then it will be changed to a visited node
+          //and the image on the grid
+          if currentNode.getCurrentState <> 'Seeker' then
+          Begin
+          currentNode.setCurrentState('Visited');
+          currentNode.Picture.LoadFromFile('Visited.jpg');
+          End;
+        End;
+      end;
+    end;
+  end;
+
+  procedure TSearch.runDepthFirstSearch(rootNode: TGridItem);
+  var
+    stack : TStack<TGridItem>;
+    itemFound : boolean;
+    currentNode, rightConnection, leftConnection, topConnection, bottomConnection : TGridItem;
+  begin
+  //Creating the stack
+  stack := TStack<TGridItem>.Create;
+  //Putting the Seeker in the stack
+  stack.push(rootNode);
+  //Whilest the number of items on the stack is more than 0 and thr target hasnt been found DO
+  while (stack.Count > 0) and (itemFound = false) do
+    begin
+      //Setting the current node as the last item to be put on the stack whilst popping it off
+      currentNode := stack.Pop;
+      //Checking if it has already visited that node
+      if (currentNode.getVisited = false) and (CurrentNode.getCurrentState <> 'Closed') then
+      begin
+        //if it hasn't then now mark it as it has been visited
+        currentNode.setVisited(true);
+        //if the current node is not a seeker or target then change the image to visited
+        if (CurrentNode.getCurrentState <> 'Seeker') and (CurrentNode.getCurrentState <> 'Target') then
+        CurrentNode.Picture.LoadFromFile('Visited.jpg');
+         //Checking if the current node is the target
+         if currentNode.getCurrentState = 'Target' then
+          //if it is then mark it as true.
+          ItemFound := true
+        else
+        begin
+          //If its not the target then get the connections
+          rightConnection := currentNode.getRightConnection;
+          leftConnection := currentNode.getLeftConnection;
+          topConnection := currentNode.getTopConnection;
+          bottomConnection := currentNode.getBottomConnection;
+          //If there is a connection there and it hasn't been visited yet
+          //then it will be placed on the stack
+          if (rightConnection <> nil) and (rightConnection.getVisited = false) then
+            stack.Push(currentNode.getRightConnection);
+          if (leftConnection <> nil) and (leftConnection.getVisited = false) then
+            stack.Push(currentNode.getLeftConnection);
+          if (topConnection <> nil) and (topConnection.getVisited = false) then
+            stack.Push(currentNode.getTopConnection);
+          if (bottomConnection <> nil) and (bottomConnection.getVisited = false) then
+            stack.Push(currentNode.getBottomConnection);
+        end;
+      end;
+    end;
+  end;
+
+  procedure sortList(var movementOptions:TList<TGridItem>);
+  var i:integer;
+      swapped:boolean;
+      temp:TGridItem;
+  begin
+    temp:=TGridItem.Create(nil);
+    repeat
+        swapped:=false;
+         for I := 1 to movementOptions.Count-1 do
+          begin
+            if movementOptions[i-1].getDistance > movementOptions[i].getDistance then
+            begin
+               temp:=movementOptions[i];
+               movementOptions[i]:=movementOptions[i-1];
+               movementOptions[i-1]:=temp;
+               swapped:=true;
+            end;
+          end;
+    until swapped = false;
+  end;
+
+  procedure TSearch.runAStarSearch(rootNode, targetNode:TGridItem);
+  var found:boolean;
+      movementOptions:TList<TGridItem>;
+      i:integer;
+      a,b,c:integer;
+  begin
+    movementOptions:=TList<TGridItem>.create;
+    movementOptions.Add(rootNode);
+    repeat
+        if (movementOptions[0].getLeftConnection <> nil) and (movementOptions[0].getLeftConnection.getCurrentState<>'Closed') and (movementOptions[0].getLeftConnection.getCurrentState<>'Visited') then
+          movementOptions.Add(movementOptions[0].getLeftConnection);
+        if (movementOptions[0].getRightConnection <> nil) and (movementOptions[0].getRightConnection.getCurrentState<>'Closed') and (movementOptions[0].getRightConnection.getCurrentState<>'Visited') then
+          movementOptions.Add(movementOptions[0].getRightConnection);
+        if (movementOptions[0].getTopConnection <> nil) and (movementOptions[0].getTopConnection.getCurrentState<>'Closed') and (movementOptions[0].getTopConnection.getCurrentState<>'Visited') then
+          movementOptions.Add(movementOptions[0].getTopConnection);
+        if (movementOptions[0].getBottomConnection <> nil) and (movementOptions[0].getBottomConnection.getCurrentState<>'Closed') and (movementOptions[0].getBottomConnection.getCurrentState<>'Visited') then
+          movementOptions.Add(movementOptions[0].getBottomConnection);
+
+
+        if movementOptions[0].getCurrentState='Target' then
+          found:=true
+        else
+          begin
+
+            //turn movementOption[0] to path taken colour
+            if movementOptions[0].getCurrentState <> 'Seeker' then
+            Begin
+              movementOptions[0].Picture.LoadFromFile('Visited.jpg');
+              movementOptions[0].setCurrentState('Visited');
+            End;
+            movementOptions.Delete(0);
+            movementOptions.TrimExcess;
+
+
+            for i := 0 to movementOptions.Count -1 do
+             begin
+                a:=abs(targetNode.getPosx-movementOptions[i].getPosx);
+                b:=abs(targetNode.getPosy-movementOptions[i].getPosy);
+                a:=a*a;
+                b:=b*b;
+                c:=round(sqrt(a+b));
+                movementOptions[i].setDistance(c);
+             end;
+
+             sortList(movementOptions);
+        end;
+    until (found = true) ;
+
+    //loop through movementOptions all items which are already not green should be
+    //turned orange or considered
+  end;
+end.

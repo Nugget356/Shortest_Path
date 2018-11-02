@@ -1,0 +1,61 @@
+unit GridItemClass;
+
+interface
+uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls;
+
+type TGridItem = class (TImage)
+  private
+    CurrentState : string;
+    Posx:Integer;
+    Posy:Integer;
+  public
+    //constructor Create(pCurrentState:String;pPosx,pPosy:Integer);
+    function getCurrentState : string;
+    function getPosx :Integer;
+    function getPosy :Integer;
+    procedure setCurrentState(pCurrentState : string);
+    procedure setPosx (pPosx :Integer);
+    procedure setPosy (pPosy :Integer);
+end;
+
+implementation
+
+  //constructor TGridItem.Create(pCurrentState: string; pPosx: Integer; pPosy: Integer);
+  //begin
+    //setCurrentState(pCurrentState);
+    //setPosx(pPosx);
+    //setPosy(pPosy);
+  //end;
+
+  function TGridItem.getCurrentState;
+  begin
+    getCurrentState := currentState;
+  end;
+
+  function TgridItem.getPosx;
+  begin
+    getPosx := Posx;
+  end;
+
+  function TGridItem.getPosy;
+  begin
+    getPosy := Posy;
+  end;
+
+  procedure TGridItem.setPosx(pPosx: Integer);
+  begin
+    Posx := pPosx;
+  end;
+
+  procedure TGridItem.setPosy(pPosy: Integer);
+  begin
+    Posy := pPosy
+  end;
+
+  procedure TGridItem.setCurrentState(pCurrentState: string);
+  begin
+    CurrentState := pCurrentState;
+  end;
+
+end.

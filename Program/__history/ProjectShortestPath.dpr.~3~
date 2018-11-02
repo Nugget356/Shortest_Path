@@ -1,0 +1,16 @@
+program ProjectShortestPath;
+
+uses
+  Vcl.Forms,
+  ShortestPath in 'ShortestPath.pas' {Form1},
+  GridItemClass in 'GridItemClass.pas',
+  SearchClass in 'SearchClass.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.
